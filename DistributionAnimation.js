@@ -1,13 +1,13 @@
-(function(window) {
+(function (window) {
   window.AnimatedDistributionBuilder = {
-    init: function({ targetId, labels, values, dropSpeed = 700, autoAdvance = false, maxCount = 10 }) {  // Added maxCount
+    init: function ({ targetId, labels, values, dropSpeed = 700, autoAdvance = false, maxCount = 10 }) {  // Added maxCount
       const container = document.getElementById(targetId);
       if (!container) return;
 
       let dropSequence = [];
       let bucketCounts = Array(labels.length).fill(0);
 
-      function setupBuckets() {
+      function setupBuckets(maxCount = 10) {
         container.innerHTML = "";
         bucketCounts = Array(labels.length).fill(0);
         dropSequence = [];
@@ -21,17 +21,17 @@
         container.style.display = "flex";
         container.style.justifyContent = "space-between";
         container.style.boxShadow = "0 0 8px rgba(0, 0, 0, 0.1)";
-        container.style.paddingLeft = "50px";
+        container.style.paddingLeft = "50px"; // space for Y-axis
 
         // Y-axis container
         const yAxis = document.createElement("div");
         yAxis.style.position = "absolute";
         yAxis.style.left = "0";
-        yAxis.style.top = "10px";  // padding top
-        yAxis.style.bottom = "40px"; // padding bottom
+        yAxis.style.top = "10px";
+        yAxis.style.bottom = "40px";
         yAxis.style.width = "50px";
         yAxis.style.display = "flex";
-        yAxis.style.flexDirection = "column-reverse"; // bottom-up numbering
+        yAxis.style.flexDirection = "column-reverse";
         yAxis.style.justifyContent = "space-between";
         yAxis.style.fontSize = "12px";
         yAxis.style.paddingRight = "8px";
@@ -47,9 +47,31 @@
           tick.style.textAlign = "right";
           yAxis.appendChild(tick);
         }
-
         container.appendChild(yAxis);
 
+        // Horizontal grid lines container (behind buckets and balls)
+        const gridLines = document.createElement("div");
+        gridLines.style.position = "absolute";
+        gridLines.style.left = "50px"; // offset for yAxis width
+        gridLines.style.top = "10px";
+        gridLines.style.bottom = "40px";
+        gridLines.style.right = "0";
+        gridLines.style.pointerEvents = "none"; // allow clicks through
+        gridLines.style.zIndex = "0"; // behind balls and buckets
+        container.appendChild(gridLines);
+
+        for (let i = 0; i <= maxCount; i++) {
+          const line = document.createElement("div");
+          line.style.position = "absolute";
+          line.style.left = "0";
+          line.style.right = "0";
+          line.style.height = "1px";
+          line.style.backgroundColor = "#ccc";
+          line.style.top = `${(container.clientHeight - 50) * (1 - i / maxCount) + 10}px`;
+          gridLines.appendChild(line);
+        }
+
+        // Create buckets
         labels.forEach(labelText => {
           const bucket = document.createElement("div");
           bucket.className = "bucket";
@@ -57,7 +79,13 @@
           bucket.style.height = "100%";
           bucket.style.borderLeft = "1px solid #ccc";
           bucket.style.position = "relative";
+          bucket.style.display = "flex";
+          bucket.style.flexDirection = "column";
+          bucket.style.justifyContent = "flex-end"; // stack balls from bottom up
+          bucket.style.alignItems = "center";       // center balls horizontally
+          bucket.style.paddingBottom = "20px";      // space for label
 
+          // Bucket label
           const label = document.createElement("div");
           label.className = "bucket-label";
           label.textContent = labelText;
@@ -76,7 +104,8 @@
       }
 
       function dropBall(bucketIndex, speed) {
-        const bucket = container.children[bucketIndex + 1]; // +1 for Y-axis div
+        // The bucket div, offset by 1 for yAxis div
+        const bucket = container.children[bucketIndex + 1];
         const count = bucketCounts[bucketIndex];
         bucketCounts[bucketIndex] += 1;
         dropSequence.push(bucketIndex);
@@ -87,18 +116,21 @@
         ball.style.height = "20px";
         ball.style.borderRadius = "50%";
         ball.style.background = "steelblue";
-        ball.style.position = "absolute";
-        ball.style.top = "0";
-        ball.style.left = "50%";
-        ball.style.transform = "translateX(-50%)";
-        ball.style.transition = `top ${speed}ms ease`;
+        ball.style.position = "relative";  // relative to flex container
+        ball.style.marginBottom = "2px";  // small gap between balls
+        ball.style.transition = `transform ${speed}ms ease`;
+
+        // Initially place ball above view, then drop it by translating Y
+        ball.style.transform = `translateY(-${(count + 1) * 24}px)`;
 
         bucket.appendChild(ball);
 
+        // Animate dropping the ball into place (translateY to 0)
         requestAnimationFrame(() => {
-          ball.style.top = (bucket.clientHeight - 45 - count * 22) + "px";
+          ball.style.transform = "translateY(0)";
         });
       }
+
 
       async function animateBalls(values, speed) {
         const shuffled = [...values].sort(() => Math.random() - 0.5);
