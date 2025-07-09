@@ -190,6 +190,7 @@
 
           async function animateBalls(values, speed) {
             const shuffled = [...values].sort(() => Math.random() - 0.5);
+            
             for (let val of shuffled) {
               dropBall(val, speed);
               await new Promise((r) => setTimeout(r, speed + 200));
@@ -197,9 +198,12 @@
 
             if (typeof Qualtrics !== "undefined" && Qualtrics.SurveyEngine) {
               Qualtrics.SurveyEngine.setEmbeddedData("DropSequence", JSON.stringify(dropSequence));
-              if (autoAdvance) document.getElementById("NextButton")?.click();
-              else {
-                document.getElementById("NextButton")?.style.display = "inline";
+              
+              if (autoAdvance) {
+                document.getElementById("NextButton")?.click();
+              } else {
+                Qualtrics.SurveyEngine.showNextButton(); // Use Qualtrics helper instead of setting display manually
+              }
             }
           }
 
