@@ -153,7 +153,7 @@
               label.style.fontSize = "14px";
               label.style.backgroundColor = "#E8EFF7";
               label.style.borderTop = "1.5px solid #E8EFF7";
-              label.style.padding = "2px 0";
+              
 
               bucket.appendChild(label);
               container.appendChild(bucket);
