@@ -200,28 +200,46 @@
           // Parent of the chart container
           const parent = container.parentNode;
 
-          // Create wrapper for Y label + chart container horizontally
-          const wrapper = document.createElement("div");
-          wrapper.style.display = "flex";
-          wrapper.style.flexDirection = "row";
-          wrapper.style.alignItems = "center";
+          // Create the main vertical wrapper
+			const mainWrapper = document.createElement("div");
+			mainWrapper.style.display = "flex";
+			mainWrapper.style.flexDirection = "column";
+			mainWrapper.style.alignItems = "center"; // Center everything horizontally
 
-          // Create Y axis label div
-          const yLabel = document.createElement("div");
-          yLabel.textContent = yAxisLabel;
-          yLabel.style.writingMode = "vertical-rl";
-          yLabel.style.transform = "rotate(180deg)";
-          yLabel.style.fontSize = "16px";
-          yLabel.style.fontWeight = "600";
-          yLabel.style.color = "#333";
-          yLabel.style.userSelect = "none";
-          yLabel.style.paddingRight = "8px";
-          yLabel.style.whiteSpace = "nowrap";
+// Create horizontal wrapper for y-axis label + chart
+const chartWrapper = document.createElement("div");
+chartWrapper.style.display = "flex";
+chartWrapper.style.flexDirection = "row";
+chartWrapper.style.alignItems = "center"; // Center vertically
 
-          // Move container into wrapper
-          wrapper.appendChild(yLabel);
-          wrapper.appendChild(container);
+// Create y-axis label
+const yLabel = document.createElement("div");
+yLabel.textContent = yAxisLabel;
+yLabel.style.writingMode = "vertical-rl";
+yLabel.style.transform = "rotate(180deg)";
+yLabel.style.fontSize = "16px";
+yLabel.style.fontWeight = "600";
+yLabel.style.color = "#333";
+yLabel.style.userSelect = "none";
+yLabel.style.paddingRight = "8px";
+yLabel.style.whiteSpace = "nowrap";
 
+// Create x-axis label
+const xLabel = document.createElement("div");
+xLabel.textContent = xAxisLabel;
+xLabel.style.marginTop = "30px";
+xLabel.style.fontWeight = "600";
+xLabel.style.fontSize = "16px";
+xLabel.style.textAlign = "center";
+
+// Assemble chart wrapper
+chartWrapper.appendChild(yLabel);
+chartWrapper.appendChild(container); // Your actual chart div
+
+// Assemble main layout
+mainWrapper.appendChild(chartWrapper);
+mainWrapper.appendChild(xLabel);
+  
           // Clear parent's content and append wrapper
           if (parent) {
             parent.innerHTML = "";
