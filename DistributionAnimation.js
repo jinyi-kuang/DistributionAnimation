@@ -198,6 +198,8 @@
             if (typeof Qualtrics !== "undefined" && Qualtrics.SurveyEngine) {
               Qualtrics.SurveyEngine.setEmbeddedData("DropSequence", JSON.stringify(dropSequence));
               if (autoAdvance) document.getElementById("NextButton")?.click();
+              else {
+                document.getElementById("NextButton")?.style.display = "inline";
             }
           }
 
