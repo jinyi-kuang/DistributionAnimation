@@ -1,4 +1,4 @@
-    (function (window) {
+ (function (window) {
       window.AnimatedDistributionBuilder = {
         init: function ({
           targetId,
@@ -6,7 +6,7 @@
           values,
           dropSpeed = 700,
           autoAdvance = false,
-          maxCount = 15
+          maxCount = 10
         }) {
           const container = document.getElementById(targetId);
           if (!container) return;
@@ -22,18 +22,18 @@
             const ballSize = 30;
             const spacing = 2;
             const unitHeight = ballSize + spacing;
-            const chartHeight = unitHeight * maxCount + spacing;
+            const chartHeight = unitHeight * (maxCount+1) + spacing;
             const containerWidth = labels.length * (ballSize + 20) + 40;
 
             container.style.position = "relative";
             container.style.width = `${containerWidth}px`;
             container.style.height = `${chartHeight}px`;
-            container.style.border = "1px solid #ccc";
+            container.style.border = "1.5px solid #4A90E2";
             container.style.borderRadius = "10px";
-            container.style.background = "white";
+            container.style.background = "#F9FAFB";
             container.style.display = "flex";
             container.style.justifyContent = "space-between";
-            container.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+            container.style.boxShadow = "0 6px 15px rgba(74, 144, 226, 0.25)"
             container.style.paddingLeft = "40px";
 
             container.dataset.unitHeight = unitHeight;
@@ -54,7 +54,7 @@
             yAxis.style.color = "#333";
             yAxis.style.userSelect = "none";
 
-            for (let i = 1; i <= maxCount; i++) {
+            for (let i = 1; i <= maxCount+1; i++) {
               const tick = document.createElement("div");
               tick.textContent = i;
               tick.style.height = `${unitHeight}px`;
@@ -75,7 +75,7 @@
             gridLines.style.pointerEvents = "none";
             gridLines.style.zIndex = "0";
 
-            for (let i = 1; i < maxCount; i++) {
+            for (let i = 1; i < maxCount+1; i++) {
               const line = document.createElement("div");
               line.style.position = "absolute";
               line.style.left = "0";
@@ -100,18 +100,18 @@
               bucket.style.flexDirection = "column";
               bucket.style.justifyContent = "flex-end";
               bucket.style.alignItems = "center";
-              bucket.style.paddingBottom = `${ballSize + 10}px`;
+              bucket.style.paddingBottom = `${unitHeight}px`;
 
               const label = document.createElement("div");
               label.className = "bucket-label";
               label.textContent = labelText;
               label.style.position = "absolute";
-              label.style.bottom = "-30px";
+              label.style.bottom = "0px";
               label.style.width = "100%";
               label.style.textAlign = "center";
               label.style.fontSize = "14px";
-              label.style.backgroundColor = "#e9ecef";
-              label.style.borderTop = "1px solid #ccc";
+              label.style.backgroundColor = "#E8EFF7";
+              label.style.borderTop = "1.5px solid #E8EFF7";
               label.style.padding = "2px 0";
 
               bucket.appendChild(label);
@@ -132,10 +132,10 @@
             ball.style.width = `${ballSize}px`;
             ball.style.height = `${ballSize}px`;
             ball.style.borderRadius = "50%";
-            ball.style.background = "steelblue";
+            ball.style.background = "linear-gradient(145deg, #357ABD, #1E5298)";
             ball.style.margin = "0 0 2px 0";
             ball.style.transition = `transform ${speed}ms ease`;
-            ball.style.transform = `translateY(-${(count + 1) * unitHeight}px)`;
+            ball.style.transform = `translateY(-${(count + 1) * unitHeight + 50}px)`;
 
             bucket.appendChild(ball);
 
@@ -157,7 +157,7 @@
             }
           }
 
-          setupBuckets(maxCount);
+          setupBuckets(maxCount+1);
           animateBalls(values, dropSpeed);
         }
       };
