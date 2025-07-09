@@ -202,7 +202,12 @@
               if (autoAdvance) {
                 document.getElementById("NextButton")?.click();
               } else {
-                Qualtrics.SurveyEngine.showNextButton(); // Use Qualtrics helper instead of setting display manually
+                const nextBtn = document.getElementById("NextButton");
+                  if (nextBtn) {
+                    nextBtn.style.display = "inline";
+                    nextBtn.style.visibility = "visible";
+                    nextBtn.disabled = false;
+                  }
               }
             }
           }
