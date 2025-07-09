@@ -4,7 +4,7 @@
           targetId,
           labels,
           values,
-          dropSpeed = 700,
+          dropSpeed = 1000,
           autoAdvance = false,
           maxCount = 10,
           yAxisLabel = "Frequency"

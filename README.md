@@ -11,19 +11,21 @@ Paste this inside:
 
 ## 2. Add JavaScript to the question
 
-Click the gear icon ⚙️ → Add JavaScript and paste the following:
+Add JavaScript and paste the following:
 
 ```
-Qualtrics.SurveyEngine.addOnload(function() {
+Qualtrics.SurveyEngine.addOnReady(function() {
   const script = document.createElement("script");
-  script.src = "https://cdn.jsdelivr.net/gh/jinyi-kuang/DistributionAnimation@main/DistributionAnimation.js";
+  script.src = "https://cdn.jsdelivr.net/gh/jinyi-kuang/DistributionAnimation@bc8604a/DistributionAnimation.js";
   script.onload = function () {
     AnimatedDistributionBuilder.init({
       targetId: "my-animation",
-      labels: ["0", "1", "2", "3", "4", "5", "6", "7"],
-      values: [0, 1, 2, 1, 4, 6, 3, 2, 5],
-      dropSpeed: 700,       // You can change this or let the user input it earlier
-      autoAdvance: false     // Automatically go to next question after animation
+      labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9","10"],
+      values: [1,2,3,4,5,6,7,8,9,9,9,9,9,9,9,9,1,5,6,7],
+      dropSpeed: 1000,
+      autoAdvance: false,
+      maxCount: 10,
+      yAxisLabel: "Frequency"
     });
   };
   document.head.appendChild(script);
