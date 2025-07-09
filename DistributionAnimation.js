@@ -231,14 +231,14 @@
 		// Create x-axis label
 		const xLabel = document.createElement("div");
 		xLabel.textContent = xAxisLabel;
-		xLabel.style.marginTop = "30px";
+		xLabel.style.marginTop = "10px";
 		xLabel.style.fontWeight = "600";
 		xLabel.style.fontSize = "16px";
 		xLabel.style.textAlign = "center";
 		
 		// Assemble chart wrapper
 		chartWrapper.appendChild(yLabel);
-		chartWrapper.appendChild(container); // Your actual chart div
+		chartWrapper.appendChild(container); 
 		
 		// Assemble main layout
 		mainWrapper.appendChild(chartWrapper);
