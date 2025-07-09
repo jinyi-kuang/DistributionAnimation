@@ -1,6 +1,6 @@
 (function(window) {
   window.AnimatedDistributionBuilder = {
-    init: function({ targetId, labels, values, dropSpeed = 700, autoAdvance = false }) {
+    init: function({ targetId, labels, values, dropSpeed = 700, autoAdvance = false, maxCount = 10 }) {  // Added maxCount
       const container = document.getElementById(targetId);
       if (!container) return;
 
@@ -23,14 +23,12 @@
         container.style.boxShadow = "0 0 8px rgba(0, 0, 0, 0.1)";
         container.style.paddingLeft = "50px";
 
-         
-
         // Y-axis container
         const yAxis = document.createElement("div");
         yAxis.style.position = "absolute";
         yAxis.style.left = "0";
-        yAxis.style.top = "10px";  // leave a bit padding on top
-        yAxis.style.bottom = "40px"; // leave some space at bottom for labels
+        yAxis.style.top = "10px";  // padding top
+        yAxis.style.bottom = "40px"; // padding bottom
         yAxis.style.width = "50px";
         yAxis.style.display = "flex";
         yAxis.style.flexDirection = "column-reverse"; // bottom-up numbering
@@ -41,7 +39,6 @@
         yAxis.style.color = "#333";
         yAxis.style.userSelect = "none";
 
-        // Create tick labels from 1 to maxCount
         for (let i = 1; i <= maxCount; i++) {
           const tick = document.createElement("div");
           tick.textContent = i;
@@ -53,7 +50,6 @@
 
         container.appendChild(yAxis);
 
-        
         labels.forEach(labelText => {
           const bucket = document.createElement("div");
           bucket.className = "bucket";
@@ -80,7 +76,7 @@
       }
 
       function dropBall(bucketIndex, speed) {
-        const bucket = container.children[bucketIndex + 1]; // offset by 1 due to Y-axis
+        const bucket = container.children[bucketIndex + 1]; // +1 for Y-axis div
         const count = bucketCounts[bucketIndex];
         bucketCounts[bucketIndex] += 1;
         dropSequence.push(bucketIndex);
