@@ -152,7 +152,7 @@
               label.style.fontSize = "14px";
               label.style.backgroundColor = "#E8EFF7";
               label.style.borderTop = "1.5px solid #E8EFF7";
-
+              label.style.padding = "2px 0";
 
               bucket.appendChild(label);
               container.appendChild(bucket);
@@ -172,14 +172,14 @@
             ball.style.width = `${ballSize}px`;
             ball.style.height = `${ballSize}px`;
             ball.style.borderRadius = "50%";
+            ball.style.textAlign = "center"; 
+            ball.style.color = "white";
             ball.style.background = "linear-gradient(145deg, #357ABD, #1E5298)";
             ball.style.margin = "0 0 2px 0";
             ball.style.transition = `transform ${speed}ms ease`;
             ball.style.transform = `translateY(-${(count + 1) * unitHeight}px)`;
-	    ball.style.color = "white";
-	    ball.textContent = labels[bucketIndex-1];
-	    ball.style.textAlign = "center"; 
-		  
+            ball.textContent = labels[bucketIndex-1];
+
             bucket.insertBefore(ball, bucket.firstChild);
 
             requestAnimationFrame(() => {
@@ -191,7 +191,7 @@
             const shuffled = [...values].sort(() => Math.random() - 0.5);
             for (let val of shuffled) {
               dropBall(val, speed);
-              await new Promise((r) => setTimeout(r, speed + 100));
+              await new Promise((r) => setTimeout(r, speed + 200));
             }
 
             if (typeof Qualtrics !== "undefined" && Qualtrics.SurveyEngine) {
@@ -204,54 +204,54 @@
           const parent = container.parentNode;
 
           // Create the main vertical wrapper
-			const mainWrapper = document.createElement("div");
-			mainWrapper.style.display = "flex";
-			mainWrapper.style.flexDirection = "column";
-			mainWrapper.style.alignItems = "center"; // Center everything horizontally
-
-	// Create horizontal wrapper for y-axis label + chart
-	const chartWrapper = document.createElement("div");
-	chartWrapper.style.display = "flex";
-	chartWrapper.style.flexDirection = "row";
-	chartWrapper.style.alignItems = "center"; // Center vertically
-
-	// Create y-axis label
-	const yLabel = document.createElement("div");
-	yLabel.textContent = yAxisLabel;
-	yLabel.style.writingMode = "vertical-rl";
-	yLabel.style.transform = "rotate(180deg)";
-	yLabel.style.fontSize = "16px";
-	yLabel.style.fontWeight = "600";
-	yLabel.style.color = "#333";
-	yLabel.style.userSelect = "none";
-	yLabel.style.paddingRight = "8px";
-	yLabel.style.whiteSpace = "nowrap";
-
-	// Create x-axis label
-	const xLabel = document.createElement("div");
-	xLabel.textContent = xAxisLabel;
-	xLabel.style.marginTop = "30px";
-	xLabel.style.fontWeight = "600";
-	xLabel.style.fontSize = "16px";
-	xLabel.style.textAlign = "center";
-	
-	// Assemble chart wrapper
-	chartWrapper.appendChild(yLabel);
-	chartWrapper.appendChild(container); // Your actual chart div
-	
-	// Assemble main layout
-	mainWrapper.appendChild(chartWrapper);
-	mainWrapper.appendChild(xLabel);
-  
-          // Clear parent's content and append wrapper
-          if (parent) {
-            parent.innerHTML = "";
-            parent.appendChild(wrapper);
-          }
-
-          // Setup buckets and start animation after
-          setupBuckets(maxCount);
-          animateBalls(values, dropSpeed);
-        },
-      };
-    })(window);
+		const mainWrapper = document.createElement("div");
+		mainWrapper.style.display = "flex";
+		mainWrapper.style.flexDirection = "column";
+		mainWrapper.style.alignItems = "center"; // Center everything horizontally
+		
+		// Create horizontal wrapper for y-axis label + chart
+		const chartWrapper = document.createElement("div");
+		chartWrapper.style.display = "flex";
+		chartWrapper.style.flexDirection = "row";
+		chartWrapper.style.alignItems = "center"; // Center vertically
+		
+		// Create y-axis label
+		const yLabel = document.createElement("div");
+		yLabel.textContent = yAxisLabel;
+		yLabel.style.writingMode = "vertical-rl";
+		yLabel.style.transform = "rotate(180deg)";
+		yLabel.style.fontSize = "16px";
+		yLabel.style.fontWeight = "600";
+		yLabel.style.color = "#333";
+		yLabel.style.userSelect = "none";
+		yLabel.style.paddingRight = "8px";
+		yLabel.style.whiteSpace = "nowrap";
+		
+		// Create x-axis label
+		const xLabel = document.createElement("div");
+		xLabel.textContent = xAxisLabel;
+		xLabel.style.marginTop = "30px";
+		xLabel.style.fontWeight = "600";
+		xLabel.style.fontSize = "16px";
+		xLabel.style.textAlign = "center";
+		
+		// Assemble chart wrapper
+		chartWrapper.appendChild(yLabel);
+		chartWrapper.appendChild(container); // Your actual chart div
+		
+		// Assemble main layout
+		mainWrapper.appendChild(chartWrapper);
+		mainWrapper.appendChild(xLabel);
+		
+		// Clear and attach to parent
+		if (parent) {
+		  parent.innerHTML = "";
+		  parent.appendChild(mainWrapper);
+		}
+		 
+		          // Setup buckets and start animation after
+		          setupBuckets(maxCount);
+		          animateBalls(values, dropSpeed);
+		        },
+		      };
+		    })(window);
