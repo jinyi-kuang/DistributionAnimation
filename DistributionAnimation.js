@@ -7,7 +7,8 @@
           dropSpeed = 1000,
           autoAdvance = false,
           maxCount = 10,
-          yAxisLabel = "Frequency"
+          yAxisLabel = "Frequency",
+          xAxisLabel = "Category"
         }) {
           const container = document.getElementById(targetId);
           if (!container) return;
