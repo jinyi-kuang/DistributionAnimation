@@ -45,7 +45,7 @@
             yAxis.style.position = "absolute";
             yAxis.style.left = "0";
             yAxis.style.top = "0px";
-            yAxis.style.bottom = "0px";
+            yAxis.style.bottom = `${unitHeight}px`;
             yAxis.style.width = "40px";
             yAxis.style.display = "flex";
             yAxis.style.flexDirection = "column-reverse";
@@ -70,7 +70,7 @@
             gridLines.style.position = "absolute";
             gridLines.style.left = "40px";
             gridLines.style.top = "0px";
-            gridLines.style.bottom = "0px";
+            gridLines.style.bottom = `${unitHeight}px`;
             gridLines.style.right = "0";
             gridLines.style.pointerEvents = "none";
             gridLines.style.zIndex = "0";
