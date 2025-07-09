@@ -1,12 +1,12 @@
-(function (window) {
-  window.AnimatedDistributionBuilder = {
+    (function (window) {
+      window.AnimatedDistributionBuilder = {
         init: function ({
           targetId,
           labels,
           values,
           dropSpeed = 700,
           autoAdvance = false,
-          maxCount = 10
+          maxCount = 15
         }) {
           const container = document.getElementById(targetId);
           if (!container) return;
@@ -161,4 +161,4 @@
           animateBalls(values, dropSpeed);
         }
       };
-})(window);
+    })(window);
