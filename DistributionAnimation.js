@@ -95,7 +95,7 @@
             yAxis.style.color = "#333";
             yAxis.style.userSelect = "none";
 
-            for (let i = 1; i <= maxCount + 1; i++) {
+            for (let i = 0; i <= maxCount + 1; i++) {
               const tick = document.createElement("div");
               tick.textContent = i;
               tick.style.height = `${unitHeight}px`;
@@ -116,7 +116,7 @@
             gridLines.style.pointerEvents = "none";
             gridLines.style.zIndex = "0";
 
-            for (let i = 1; i < maxCount + 1; i++) {
+            for (let i = 0; i < maxCount + 1; i++) {
               const line = document.createElement("div");
               line.style.position = "absolute";
               line.style.left = "0";
