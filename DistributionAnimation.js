@@ -45,7 +45,7 @@
             yAxis.style.position = "absolute";
             yAxis.style.left = "0";
             yAxis.style.top = "0px";
-            yAxis.style.bottom = `${unitHeight}px`;
+            yAxis.style.bottom = "0px";
             yAxis.style.width = "40px";
             yAxis.style.display = "flex";
             yAxis.style.flexDirection = "column-reverse";
@@ -70,7 +70,7 @@
             gridLines.style.position = "absolute";
             gridLines.style.left = "40px";
             gridLines.style.top = "0px";
-            gridLines.style.bottom = `${unitHeight}px`;
+            gridLines.style.bottom = "0px";
             gridLines.style.right = "0";
             gridLines.style.pointerEvents = "none";
             gridLines.style.zIndex = "0";
@@ -106,7 +106,7 @@
               label.className = "bucket-label";
               label.textContent = labelText;
               label.style.position = "absolute";
-              label.style.bottom = "0";
+              label.style.bottom = "-30px";
               label.style.width = "100%";
               label.style.textAlign = "center";
               label.style.fontSize = "14px";
