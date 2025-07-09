@@ -16,13 +16,13 @@ Add JavaScript and paste the following:
 ```
 Qualtrics.SurveyEngine.addOnReady(function() {
   const script = document.createElement("script");
-  script.src = "https://cdn.jsdelivr.net/gh/jinyi-kuang/DistributionAnimation@bc8604a/DistributionAnimation.js";
+  script.src = "https://cdn.jsdelivr.net/gh/jinyi-kuang/DistributionAnimation@f9604e9/DistributionAnimation.js";
   script.onload = function () {
     AnimatedDistributionBuilder.init({
       targetId: "my-animation",
-      labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9","10"],
+      labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
       values: [1,2,3,4,5,6,7,8,9,9,9,9,9,9,9,9,1,5,6,7],
-      dropSpeed: 1000,
+      dropSpeed: 700,
       autoAdvance: false,
       maxCount: 10,
       yAxisLabel: "Frequency"
