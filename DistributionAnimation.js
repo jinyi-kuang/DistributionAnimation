@@ -1,4 +1,4 @@
- (function (window) {
+    (function (window) {
       window.AnimatedDistributionBuilder = {
         init: function ({
           targetId,
@@ -6,13 +6,54 @@
           values,
           dropSpeed = 700,
           autoAdvance = false,
-          maxCount = 10
+          maxCount = 10,
+          yAxisLabel = "Frequency"
         }) {
           const container = document.getElementById(targetId);
           if (!container) return;
 
           let dropSequence = [];
           let bucketCounts = Array(labels.length).fill(0);
+
+          // Inject ball styles for modern 3D look
+          const style = document.createElement("style");
+          style.innerHTML = `
+            .ball {
+              width: 25px;
+              height: 25px;
+              border-radius: 50%;
+              background: linear-gradient(145deg, #4facfe, #00f2fe);
+              box-shadow:
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+              border: 1px solid rgba(255, 255, 255, 0.3);
+              position: relative;
+              overflow: hidden;
+            }
+
+            .ball::before {
+              content: '';
+              position: absolute;
+              top: 15%;
+              left: 15%;
+              width: 40%;
+              height: 40%;
+              background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, transparent 70%);
+              border-radius: 50%;
+            }
+
+            .ball::after {
+              content: '';
+              position: absolute;
+              bottom: 10%;
+              right: 10%;
+              width: 20%;
+              height: 20%;
+              background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, transparent 70%);
+              border-radius: 50%;
+            }
+          `;
+          document.head.appendChild(style);
 
           function setupBuckets(maxCount = 10) {
             container.innerHTML = "";
@@ -22,7 +63,7 @@
             const ballSize = 30;
             const spacing = 2;
             const unitHeight = ballSize + spacing;
-            const chartHeight = unitHeight * (maxCount+1) + spacing;
+            const chartHeight = unitHeight * (maxCount + 1) + spacing;
             const containerWidth = labels.length * (ballSize + 20) + 40;
 
             container.style.position = "relative";
@@ -33,7 +74,7 @@
             container.style.background = "#F9FAFB";
             container.style.display = "flex";
             container.style.justifyContent = "space-between";
-            container.style.boxShadow = "0 6px 15px rgba(74, 144, 226, 0.25)"
+            container.style.boxShadow = "0 6px 15px rgba(74, 144, 226, 0.25)";
             container.style.paddingLeft = "40px";
 
             container.dataset.unitHeight = unitHeight;
@@ -54,7 +95,7 @@
             yAxis.style.color = "#333";
             yAxis.style.userSelect = "none";
 
-            for (let i = 0; i <= maxCount+1; i++) {
+            for (let i = 1; i <= maxCount + 1; i++) {
               const tick = document.createElement("div");
               tick.textContent = i;
               tick.style.height = `${unitHeight}px`;
@@ -75,21 +116,20 @@
             gridLines.style.pointerEvents = "none";
             gridLines.style.zIndex = "0";
 
-            for (let i = 0; i < maxCount+1; i++) {
+            for (let i = 1; i < maxCount + 1; i++) {
               const line = document.createElement("div");
               line.style.position = "absolute";
               line.style.left = "0";
               line.style.right = "0";
               line.style.height = "1px";
               line.style.backgroundColor = "#ccc";
-              // line sits just above ball i
               line.style.top = `${i * unitHeight}px`;
               gridLines.appendChild(line);
             }
             container.appendChild(gridLines);
 
             // Buckets
-            labels.forEach(labelText => {
+            labels.forEach((labelText) => {
               const bucket = document.createElement("div");
               bucket.className = "bucket";
               bucket.style.flex = "1";
@@ -135,9 +175,9 @@
             ball.style.background = "linear-gradient(145deg, #357ABD, #1E5298)";
             ball.style.margin = "0 0 2px 0";
             ball.style.transition = `transform ${speed}ms ease`;
-            ball.style.transform = `translateY(-${(count + 1) * unitHeight + 50}px)`;
+            ball.style.transform = `translateY(-${(count + 1) * unitHeight + 30}px)`;
 
-            bucket.appendChild(ball);
+            bucket.insertBefore(ball, bucket.firstChild);
 
             requestAnimationFrame(() => {
               ball.style.transform = "translateY(0)";
@@ -148,17 +188,49 @@
             const shuffled = [...values].sort(() => Math.random() - 0.5);
             for (let val of shuffled) {
               dropBall(val, speed);
-              await new Promise(r => setTimeout(r, speed + 100));
+              await new Promise((r) => setTimeout(r, speed + 100));
             }
 
-            if (typeof Qualtrics !== 'undefined' && Qualtrics.SurveyEngine) {
+            if (typeof Qualtrics !== "undefined" && Qualtrics.SurveyEngine) {
               Qualtrics.SurveyEngine.setEmbeddedData("DropSequence", JSON.stringify(dropSequence));
               if (autoAdvance) document.getElementById("NextButton")?.click();
             }
           }
 
-          setupBuckets(maxCount+1);
+          // Parent of the chart container
+          const parent = container.parentNode;
+
+          // Create wrapper for Y label + chart container horizontally
+          const wrapper = document.createElement("div");
+          wrapper.style.display = "flex";
+          wrapper.style.flexDirection = "row";
+          wrapper.style.alignItems = "center";
+
+          // Create Y axis label div
+          const yLabel = document.createElement("div");
+          yLabel.textContent = yAxisLabel;
+          yLabel.style.writingMode = "vertical-rl";
+          yLabel.style.transform = "rotate(180deg)";
+          yLabel.style.fontSize = "16px";
+          yLabel.style.fontWeight = "600";
+          yLabel.style.color = "#333";
+          yLabel.style.userSelect = "none";
+          yLabel.style.paddingRight = "8px";
+          yLabel.style.whiteSpace = "nowrap";
+
+          // Move container into wrapper
+          wrapper.appendChild(yLabel);
+          wrapper.appendChild(container);
+
+          // Clear parent's content and append wrapper
+          if (parent) {
+            parent.innerHTML = "";
+            parent.appendChild(wrapper);
+          }
+
+          // Setup buckets and start animation after
+          setupBuckets(maxCount);
           animateBalls(values, dropSpeed);
-        }
+        },
       };
     })(window);
