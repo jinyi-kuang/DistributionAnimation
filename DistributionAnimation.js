@@ -1,7 +1,6 @@
-// animated-distribution-builder.js
 (function(window) {
   window.AnimatedDistributionBuilder = {
-    init: function({ targetId, labels, values, dropSpeed = 700, autoAdvance = true }) {
+    init: function({ targetId, labels, values, dropSpeed = 700, autoAdvance = false }) {
       const container = document.getElementById(targetId);
       if (!container) return;
 
@@ -22,33 +21,39 @@
         container.style.display = "flex";
         container.style.justifyContent = "space-between";
         container.style.boxShadow = "0 0 8px rgba(0, 0, 0, 0.1)";
-        container.style.paddingLeft = "40px";
+        container.style.paddingLeft = "50px";
 
-        // Y-axis
+         
+
+        // Y-axis container
         const yAxis = document.createElement("div");
         yAxis.style.position = "absolute";
         yAxis.style.left = "0";
-        yAxis.style.top = "0";
-        yAxis.style.bottom = "0";
-        yAxis.style.width = "40px";
+        yAxis.style.top = "10px";  // leave a bit padding on top
+        yAxis.style.bottom = "40px"; // leave some space at bottom for labels
+        yAxis.style.width = "50px";
         yAxis.style.display = "flex";
-        yAxis.style.flexDirection = "column";
+        yAxis.style.flexDirection = "column-reverse"; // bottom-up numbering
         yAxis.style.justifyContent = "space-between";
-        yAxis.style.fontSize = "10px";
-        yAxis.style.padding = "4px 2px";
+        yAxis.style.fontSize = "12px";
+        yAxis.style.paddingRight = "8px";
         yAxis.style.borderRight = "1px solid #ccc";
+        yAxis.style.color = "#333";
+        yAxis.style.userSelect = "none";
 
-        for (let i = 5; i >= 0; i--) {
+        // Create tick labels from 1 to maxCount
+        for (let i = 1; i <= maxCount; i++) {
           const tick = document.createElement("div");
           tick.textContent = i;
-          tick.style.height = "50px";
+          tick.style.height = `${(container.clientHeight - 50) / maxCount}px`;
+          tick.style.lineHeight = tick.style.height;
           tick.style.textAlign = "right";
-          tick.style.color = "#333";
           yAxis.appendChild(tick);
         }
 
         container.appendChild(yAxis);
 
+        
         labels.forEach(labelText => {
           const bucket = document.createElement("div");
           bucket.className = "bucket";
