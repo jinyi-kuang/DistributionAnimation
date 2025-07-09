@@ -104,7 +104,6 @@
       }
 
       function dropBall(bucketIndex, speed) {
-        // The bucket div, offset by 1 for yAxis div
         const bucket = container.children[bucketIndex + 1];
         const count = bucketCounts[bucketIndex];
         bucketCounts[bucketIndex] += 1;
@@ -116,21 +115,16 @@
         ball.style.height = "20px";
         ball.style.borderRadius = "50%";
         ball.style.background = "steelblue";
-        ball.style.position = "relative";  // relative to flex container
-        ball.style.marginBottom = "2px";  // small gap between balls
+        ball.style.margin = "2px 0";
         ball.style.transition = `transform ${speed}ms ease`;
-
-        // Initially place ball above view, then drop it by translating Y
         ball.style.transform = `translateY(-${(count + 1) * 24}px)`;
 
         bucket.appendChild(ball);
 
-        // Animate dropping the ball into place (translateY to 0)
         requestAnimationFrame(() => {
           ball.style.transform = "translateY(0)";
         });
       }
-
 
       async function animateBalls(values, speed) {
         const shuffled = [...values].sort(() => Math.random() - 0.5);
